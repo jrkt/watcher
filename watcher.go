@@ -4,6 +4,7 @@ import (
 	"sync"
 	"os"
 	"io/ioutil"
+	"time"
 )
 
 const (
@@ -59,6 +60,7 @@ func (w *Watcher) watch(path string, f File) {
 				f.LastSize = info.Size()
 			}
 		}
+		time.Sleep(100 * time.Millisecond)
 	}
 }
 
