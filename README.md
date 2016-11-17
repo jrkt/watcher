@@ -23,11 +23,11 @@ func main() {
 	go func() {
 		for {
 			select {
-			case event := <-w.Events:
-				log.Println("File changed", event)
-			case err := <-w.Errors:
-				log.Println("Error", err)
-			}
+                case event := <-w.Events:
+                    log.Println("File changed", event)
+                case err := <-w.Errors:
+                    log.Println("Error Path", err.Path, err.Error())
+                }
 		}
 	}()
 
@@ -43,9 +43,18 @@ func main() {
 }
 ```
 
+You can also add a directory to the watch list:
+
+```go
+err := w.Add("/etc/conf/")
+if err != nil {
+    log.Fatalln(err)
+}
+```
+
 # output
 
 ```
 2016/11/16 21:00:08 File changed {/path/file1.txt MODIFIED}
-2016/11/16 21:00:12 File changed {/path/file1.txt MODIFIED}
+2016/11/16 21:00:12 File changed {/path/file2.txt MODIFIED}
 ```
