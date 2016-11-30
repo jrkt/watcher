@@ -1,3 +1,6 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/jonathankentstevens/watcher)](https://goreportcard.com/report/github.com/jonathankentstevens/watcher)
+[![GoDoc](https://godoc.org/github.com/jonathankentstevens/watcher?status.svg)](https://godoc.org/github.com/jonathankentstevens/watcher)
+
 # watcher
 Simple file or directory watcher
 
