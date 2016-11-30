@@ -5,9 +5,9 @@
 Simple file or directory watcher
 
 # implementation
-    
+
     go get github.com/jonathankentstevens/watcher
-    
+
 # usage 
 
 ```go

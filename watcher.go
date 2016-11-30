@@ -1,13 +1,15 @@
+//package watcher allows for single & multi-file watching to execute various tasks
 package watcher
 
 import (
-	"sync"
-	"os"
 	"io/ioutil"
+	"os"
+	"sync"
 	"time"
 )
 
 const (
+	//const identifying an operation describing modification
 	OPERATION_MODIFIED = "MODIFIED"
 )
 
@@ -16,15 +18,18 @@ type Watcher struct {
 	Events chan Event
 	Errors chan Error
 	sync.Mutex
-	paths  map[string]File
-	done   chan struct{}
+	paths map[string]File
+	done  chan struct{}
 }
 
+// Event houses the name of the file and the operation performed
 type Event struct {
 	Name      string
 	Operation string
 }
 
+// Error contains the error type, path to the file that originated the error,
+// the file.Info object and error message
 type Error struct {
 	error
 	Path string
@@ -32,17 +37,19 @@ type Error struct {
 	Msg  string
 }
 
+// File is a wrapper to house the os.FileInfo and the LastSize the file was
 type File struct {
 	LastSize int64
 	Info     os.FileInfo
 }
 
+// New returns an empty Watcher pointer
 func New() *Watcher {
 	w := &Watcher{
-		Events:   make(chan Event),
-		Errors:   make(chan Error),
-		paths:    make(map[string]File),
-		done:     make(chan struct{}),
+		Events: make(chan Event),
+		Errors: make(chan Error),
+		paths:  make(map[string]File),
+		done:   make(chan struct{}),
 	}
 	return w
 }
@@ -65,7 +72,7 @@ func (w *Watcher) watch(path string, f File) {
 }
 
 func (w *Watcher) Add(path string) error {
-	info, err := os.Stat(path);
+	info, err := os.Stat(path)
 	if err != nil {
 		return err
 	}
@@ -79,7 +86,7 @@ func (w *Watcher) Add(path string) error {
 			fPath := path + file.Name()
 			info, err := os.Stat(path + file.Name())
 			if err != nil {
-				println("Error adding file to watch list", path + file.Name())
+				println("Error adding file to watch list", path+file.Name())
 				continue
 			}
 			w.Lock()
