@@ -1,4 +1,4 @@
-//package watcher allows for single & multi-file watching to execute various tasks
+//Package watcher allows for single & multi-file watching to execute various tasks
 package watcher
 
 import (
@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	//const identifying an operation describing modification
+	//OPERATION_MODIFIED identifies the operation against the file
 	OPERATION_MODIFIED = "MODIFIED"
 )
 
@@ -61,11 +61,10 @@ func (w *Watcher) watch(path string, f File) {
 			w.Errors <- Error{Path: path, File: f, Msg: err.Error()}
 			w.Remove(path)
 			return
-		} else {
-			if f.LastSize != info.Size() {
-				w.Events <- Event{Name: path, Operation: OPERATION_MODIFIED}
-				f.LastSize = info.Size()
-			}
+		}
+		if f.LastSize != info.Size() {
+			w.Events <- Event{Name: path, Operation: OPERATION_MODIFIED}
+			f.LastSize = info.Size()
 		}
 		time.Sleep(1 * time.Second)
 	}
