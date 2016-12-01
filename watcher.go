@@ -70,6 +70,7 @@ func (w *Watcher) watch(path string, f File) {
 	}
 }
 
+// Adds a filepath to the channel that is watching the files
 func (w *Watcher) Add(path string) error {
 	info, err := os.Stat(path)
 	if err != nil {
@@ -109,12 +110,14 @@ func (w *Watcher) Add(path string) error {
 	return nil
 }
 
+// Removes a file from being watched
 func (w *Watcher) Remove(path string) {
 	w.Lock()
 	defer w.Unlock()
 	delete(w.paths, path)
 }
 
+// Closes all channels
 func (w *Watcher) Close() {
 	close(w.Events)
 	close(w.Errors)
