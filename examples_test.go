@@ -1,7 +1,6 @@
 package watcher_test
 
 import (
-	"classes/Servers/Config"
 	"log"
 	"github.com/jonathankentstevens/watcher"
 )
@@ -15,7 +14,6 @@ func ExampleNew() {
 		for {
 			select {
 			case <-w.Events:
-				err := Config.Refresh()
 				if err != nil {
 					log.Println("Config refresh failed")
 				} else {
