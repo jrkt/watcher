@@ -62,8 +62,3 @@ if err != nil {
 2016/11/16 21:00:08 File changed {/path/file1.txt MODIFIED}
 2016/11/16 21:00:12 File changed {/path/file2.txt MODIFIED}
 ```
-
-# sample
-<video width="1920" height="1080" controls>
-    <source src="sample.mp4" type="video/mp4">
-</video>
