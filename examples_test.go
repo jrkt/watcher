@@ -14,11 +14,7 @@ func ExampleNew() {
 		for {
 			select {
 			case <-w.Events:
-				if err != nil {
-					log.Println("Config refresh failed")
-				} else {
-					log.Println("Config refreshed")
-				}
+				log.Println("Config refreshed")
 			case err := <-w.Errors:
 				log.Println("Config File watcher error:", err.Path, err.Msg)
 			}
