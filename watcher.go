@@ -8,6 +8,7 @@ import (
 )
 
 const (
+	//OPERATION_MODIFIED is the constant defining a modify action
 	OPERATION_MODIFIED = "MODIFIED"
 )
 
@@ -20,11 +21,13 @@ type Watcher struct {
 	done  chan struct{}
 }
 
+//Event defines the filename and specific operation performed
 type Event struct {
 	Name      string
 	Operation string
 }
 
+//Error holds the error as well as the file path, the os.Info of the file, and the error message
 type Error struct {
 	error
 	Path string
@@ -32,11 +35,13 @@ type Error struct {
 	Msg  string
 }
 
+//File contains each file's last modification time and it's respective os.Info
 type File struct {
 	LastModTime time.Time
 	Info        os.FileInfo
 }
 
+//New returns a pointer to a new Watcher instance with everything initialized
 func New() *Watcher {
 	w := &Watcher{
 		Events: make(chan Event),
@@ -47,6 +52,7 @@ func New() *Watcher {
 	return w
 }
 
+//watch serves as a goroutine for each path added to the watch list
 func (w *Watcher) watch(path string, f File) {
 	for {
 		info, err := os.Stat(path)
@@ -54,17 +60,17 @@ func (w *Watcher) watch(path string, f File) {
 			w.Errors <- Error{Path: path, File: f, Msg: err.Error()}
 			w.Remove(path)
 			return
-		} else {
-			modTime := info.ModTime()
-			if f.LastModTime != modTime {
-				w.Events <- Event{Name: path, Operation: OPERATION_MODIFIED}
-				f.LastModTime = modTime
-			}
+		}
+		modTime := info.ModTime()
+		if f.LastModTime != modTime {
+			w.Events <- Event{Name: path, Operation: OPERATION_MODIFIED}
+			f.LastModTime = modTime
 		}
 		time.Sleep(1 * time.Second)
 	}
 }
 
+//Add adds a file/directory path to the watch list
 func (w *Watcher) Add(path string) error {
 	info, err := os.Stat(path)
 	if err != nil {
@@ -104,12 +110,14 @@ func (w *Watcher) Add(path string) error {
 	return nil
 }
 
+//Remove removes a path from the watch list
 func (w *Watcher) Remove(path string) {
 	w.Lock()
 	defer w.Unlock()
 	delete(w.paths, path)
 }
 
+//Close closes all channels & goroutines
 func (w *Watcher) Close() {
 	close(w.Events)
 	close(w.Errors)
