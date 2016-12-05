@@ -13,10 +13,10 @@ func ExampleNew() {
 	go func() {
 		for {
 			select {
-			case <-w.Events:
-				log.Println("Config refreshed")
+			case ev := <-w.Events:
+				log.Println("File changed:", ev.Name)
 			case err := <-w.Errors:
-				log.Println("Config File watcher error:", err.Path, err.Msg)
+				log.Println("Watcher error:", err.Path, err.Msg)
 			}
 		}
 	}()
