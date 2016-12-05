@@ -1,4 +1,3 @@
-//Package watcher allows for single & multi-file watching to execute various tasks
 package watcher
 
 import (
@@ -9,7 +8,6 @@ import (
 )
 
 const (
-	//OPERATION_MODIFIED identifies the operation against the file
 	OPERATION_MODIFIED = "MODIFIED"
 )
 
@@ -22,14 +20,11 @@ type Watcher struct {
 	done  chan struct{}
 }
 
-// Event houses the name of the file and the operation performed
 type Event struct {
 	Name      string
 	Operation string
 }
 
-// Error contains the error type, path to the file that originated the error,
-// the file.Info object and error message
 type Error struct {
 	error
 	Path string
@@ -37,13 +32,11 @@ type Error struct {
 	Msg  string
 }
 
-// File is a wrapper to house the os.FileInfo and the LastSize the file was
 type File struct {
-	LastSize int64
-	Info     os.FileInfo
+	LastModTime time.Time
+	Info        os.FileInfo
 }
 
-// New returns an empty Watcher pointer
 func New() *Watcher {
 	w := &Watcher{
 		Events: make(chan Event),
@@ -61,16 +54,17 @@ func (w *Watcher) watch(path string, f File) {
 			w.Errors <- Error{Path: path, File: f, Msg: err.Error()}
 			w.Remove(path)
 			return
-		}
-		if f.LastSize != info.Size() {
-			w.Events <- Event{Name: path, Operation: OPERATION_MODIFIED}
-			f.LastSize = info.Size()
+		} else {
+			modTime := info.ModTime()
+			if f.LastModTime != modTime {
+				w.Events <- Event{Name: path, Operation: OPERATION_MODIFIED}
+				f.LastModTime = modTime
+			}
 		}
 		time.Sleep(1 * time.Second)
 	}
 }
 
-// Add adds a filepath to the channel that is watching the files
 func (w *Watcher) Add(path string) error {
 	info, err := os.Stat(path)
 	if err != nil {
@@ -92,7 +86,7 @@ func (w *Watcher) Add(path string) error {
 			w.Lock()
 			_, exists := w.paths[fPath]
 			if !exists {
-				w.paths[fPath] = File{LastSize: info.Size(), Info: info}
+				w.paths[fPath] = File{LastModTime: info.ModTime(), Info: info}
 			}
 			w.Unlock()
 			go w.watch(fPath, w.paths[fPath])
@@ -101,7 +95,7 @@ func (w *Watcher) Add(path string) error {
 		w.Lock()
 		_, exists := w.paths[path]
 		if !exists {
-			w.paths[path] = File{LastSize: info.Size(), Info: info}
+			w.paths[path] = File{LastModTime: info.ModTime(), Info: info}
 		}
 		w.Unlock()
 		go w.watch(path, w.paths[path])
@@ -110,14 +104,12 @@ func (w *Watcher) Add(path string) error {
 	return nil
 }
 
-// Remove removes a file from being watched
 func (w *Watcher) Remove(path string) {
 	w.Lock()
 	defer w.Unlock()
 	delete(w.paths, path)
 }
 
-// Close closes all channels
 func (w *Watcher) Close() {
 	close(w.Events)
 	close(w.Errors)
