@@ -3,7 +3,7 @@ package watcher_test
 import (
 	"classes/Servers/Config"
 	"log"
-	"vendor/github.com/jonathankentstevens/watcher"
+	"github.com/jonathankentstevens/watcher"
 )
 
 func ExampleNew() {
