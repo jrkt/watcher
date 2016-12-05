@@ -21,7 +21,7 @@ type Watcher struct {
 	done  chan struct{}
 }
 
-//Event defines the filename and specific operation performed
+//Event defines the filename & specific operation performed
 type Event struct {
 	Name      string
 	Operation string
@@ -117,7 +117,7 @@ func (w *Watcher) Remove(path string) {
 	delete(w.paths, path)
 }
 
-//Close closes all channels & goroutines
+//Close closes all channels
 func (w *Watcher) Close() {
 	close(w.Events)
 	close(w.Errors)
