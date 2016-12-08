@@ -1,3 +1,4 @@
+[![License](http://img.shields.io/:license-gpl3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0.html)
 [![Go Report Card](https://goreportcard.com/badge/github.com/jonathankentstevens/watcher)](https://goreportcard.com/report/github.com/jonathankentstevens/watcher)
 [![GoDoc](https://godoc.org/github.com/jonathankentstevens/watcher?status.svg)](https://godoc.org/github.com/jonathankentstevens/watcher)
 [![Build Status](https://travis-ci.org/jonathankentstevens/watcher.svg?branch=master)](https://travis-ci.org/jonathankentstevens/watcher)
