@@ -21,7 +21,7 @@ import (
 )
 
 func main() {
-	w := watcher.NewWatcher()
+	w := watcher.New()
 	defer w.Close()
 
 	done := make(chan bool)
