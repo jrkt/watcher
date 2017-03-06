@@ -1,8 +1,9 @@
 package watcher_test
 
 import (
-	"github.com/jonathankentstevens/watcher"
 	"log"
+
+	"github.com/jonathankentstevens/watcher"
 )
 
 func ExampleNew() {
