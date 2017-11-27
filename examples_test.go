@@ -3,7 +3,7 @@ package watcher_test
 import (
 	"log"
 
-	"github.com/jonathankentstevens/watcher"
+	"github.com/jrkt/watcher"
 )
 
 func ExampleNew() {

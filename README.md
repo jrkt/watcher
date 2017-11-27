@@ -1,14 +1,14 @@
 [![License](http://img.shields.io/:license-gpl3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0.html)
-[![Go Report Card](https://goreportcard.com/badge/github.com/jonathankentstevens/watcher)](https://goreportcard.com/report/github.com/jonathankentstevens/watcher)
-[![GoDoc](https://godoc.org/github.com/jonathankentstevens/watcher?status.svg)](https://godoc.org/github.com/jonathankentstevens/watcher)
-[![Build Status](https://travis-ci.org/jonathankentstevens/watcher.svg?branch=master)](https://travis-ci.org/jonathankentstevens/watcher)
+[![Go Report Card](https://goreportcard.com/badge/github.com/jrkt/watcher)](https://goreportcard.com/report/github.com/jrkt/watcher)
+[![GoDoc](https://godoc.org/github.com/jrkt/watcher?status.svg)](https://godoc.org/github.com/jrkt/watcher)
+[![Build Status](https://travis-ci.org/jrkt/watcher.svg?branch=master)](https://travis-ci.org/jrkt/watcher)
 
 # watcher
 Simple file or directory watcher
 
 # implementation
 
-    go get github.com/jonathankentstevens/watcher
+    go get github.com/jrkt/watcher
 
 # usage 
 
@@ -17,7 +17,7 @@ package main
 
 import (
 	"log"
-	"github.com/jonathankentstevens/watcher"
+	"github.com/jrkt/watcher"
 )
 
 func main() {
